@@ -6,12 +6,10 @@ import { Provider as ReduxProvider } from 'react-redux';
 import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
-import configureStore from './redux/configureStore';
+import store from './redux/configureStore';
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
-
-const store = configureStore();
 
 ReactDOM.render(
     <ReduxProvider store={store}>
