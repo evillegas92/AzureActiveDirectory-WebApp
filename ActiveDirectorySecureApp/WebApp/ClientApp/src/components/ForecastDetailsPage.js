@@ -1,26 +1,38 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { selectForecastById } from '../redux/slices/forecastsSlice'
+import { useGetForecastQuery } from '../redux/slices/apiSlice'
 
 export const ForecastDetailsPage = ({ match }) => {
-  const { forecastId } = match.params
+    const { forecastId } = match.params
 
-  const forecast = useSelector(state => selectForecastById(state, forecastId));
+    const { data: forecast, isFetching, isSuccess } = useGetForecastQuery(forecastId);
 
-  if (!forecast) {
+    let content
+    if (isFetching) {
+        content = <span>Loading...</span>
+    } else if (isSuccess) {
+        content = (
+            <div className='row'>
+                <div className='col'>
+                    <p>{forecast.summary}</p>
+                </div>
+                <div className='col'>
+                    <p>{forecast.date}</p>
+                </div>
+                <div className='col'>
+                    <p>{forecast.temperatureC}</p>
+                </div>
+                <div className='col'>
+                    <p>{forecast.temperatureF}</p>
+                </div>
+            </div>
+        )
+    }
+
     return (
-      <section>
-        <h2>Forecast not found!</h2>
-      </section>
+        <section>
+            <article>
+                {content}
+            </article>
+        </section>
     )
-  }
-
-  return (
-    <section>
-      <article className="post">
-        <h2>{forecast.summary}</h2>
-        <p>{forecast.date}</p>
-      </article>
-    </section>
-  )
 }

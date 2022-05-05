@@ -1,10 +1,9 @@
 ﻿import { configureStore } from '@reduxjs/toolkit';
-import reduxImmutableStateInvariant from 'redux-immutable-state-invariant';
-import thunk from 'redux-thunk';
-import forecastsReducer from './slices/forecastsSlice';
+import { apiSlice } from './slices/apiSlice';
 
 export default configureStore({
     reducer: {
-        forecasts: forecastsReducer
-    }
+        [apiSlice.reducerPath]: apiSlice.reducer
+    },
+    middleware: getDefaultMiddleware => getDefaultMiddleware().concat(apiSlice.middleware)
 });

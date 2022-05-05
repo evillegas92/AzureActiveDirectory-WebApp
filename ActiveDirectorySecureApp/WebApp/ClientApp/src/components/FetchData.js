@@ -1,7 +1,6 @@
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from 'react-redux';
+import React from "react";
 import { Link } from 'react-router-dom';
-import { selectAllForecasts, fetchForecasts } from "./../redux/slices/forecastsSlice";
+import { useGetForecastsQuery } from "./../redux/slices/apiSlice";
 
 const ResultsTable = ({ forecasts }) => {
   return (
@@ -17,12 +16,12 @@ const ResultsTable = ({ forecasts }) => {
       </thead>
       <tbody>
         {forecasts.map((forecast) => (
-          <tr key={forecast.date}>
+          <tr key={forecast.id}>
             <td>{forecast.date}</td>
             <td>{forecast.temperatureC}</td>
             <td>{forecast.temperatureF}</td>
             <td>{forecast.summary}</td>
-            <td><Link to={`/forecasts/${forecast.date}`} className="btn btn-secondary">View</Link></td>
+            <td><Link to={`/forecasts/${forecast.id}`} className="btn btn-secondary">View</Link></td>
           </tr>
         ))}
       </tbody>
@@ -32,26 +31,23 @@ const ResultsTable = ({ forecasts }) => {
 
 export const FetchData = () => {
 
-  const dispatch = useDispatch();
-
-  const forecasts = useSelector(selectAllForecasts);
-  const forecastsStatus = useSelector(state => state.forecasts.status);
-  const forecastsError = useSelector(state => state.forecasts.error);
-
-  useEffect(() => {
-    if (forecastsStatus === 'idle') {
-      dispatch(fetchForecasts());
-    }
-  }, [forecastsStatus, dispatch]);
+  const {
+    data: forecasts = [],
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    refetch //use this to refresh cached data (when not using tags)
+  } = useGetForecastsQuery()
 
   let content;
-  if (forecastsStatus === 'loading') {
+  if (isLoading) {
     content = <span>Loading...</span>
   }
-  else if (forecastsStatus === 'failed') {
-    content = <span>{forecastsError}</span>
+  else if (isError) {
+    content = <span>{error.toString()}</span>
   }
-  else if (forecastsStatus === 'succeeded') {
+  else if (isSuccess) {
     content = <ResultsTable forecasts={forecasts}></ResultsTable>
   }
 
