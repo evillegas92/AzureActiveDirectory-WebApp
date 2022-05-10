@@ -7,17 +7,24 @@ import App from './App';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import reportWebVitals from './reportWebVitals';
 import store from './redux/configureStore';
+import { PublicClientApplication } from "@azure/msal-browser";
+import { MsalProvider } from "@azure/msal-react";
+import { msalConfig } from "./authConfig";
 
 const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
 const rootElement = document.getElementById('root');
 
+const msalInstance = new PublicClientApplication(msalConfig);
+
 ReactDOM.render(
     <ReduxProvider store={store}>
         <BrowserRouter basename={baseUrl}>
-            <App />
+            <MsalProvider instance={msalInstance}>
+                <App />
+            </MsalProvider>
         </BrowserRouter>
     </ReduxProvider>,
-  rootElement);
+    rootElement);
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -4,7 +4,6 @@ import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { FetchData } from './components/FetchData';
 import { ForecastDetailsPage } from './components/ForecastDetailsPage';
-import { Counter } from './components/Counter';
 import PageNotFound from './components/PageNotFound';
 
 import './custom.css'
@@ -17,7 +16,6 @@ export default class App extends Component {
         <Layout>
             <Switch>
                 <Route exact path='/' component={Home} />
-                <Route path='/counter' component={Counter} />
                 <Route path='/fetch-data' component={FetchData} />
                 <Route exact path='/forecasts/:forecastId' component={ForecastDetailsPage} />
                 <Route component={PageNotFound} />
