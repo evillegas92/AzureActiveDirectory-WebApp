@@ -1,6 +1,8 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react";
+import { ProfileContent } from './ProfileContent';
 
 export const Home = (props) => {
 
@@ -17,13 +19,19 @@ export const Home = (props) => {
       </ul>
       <p>We have also set up:</p>
       <ul>
-        <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
+        <li><strong>Client-side navigation</strong>. For example, click <em>Fetch data</em> then <em>Home</em> to return here.</li>
         <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
         <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
       </ul>
-      <p>
-        Press Sign In in the navigation bar to kick off the authentication process. Then try to access the secure resource Fetch Data.
-      </p>
+
+      <UnauthenticatedTemplate>
+        <p>
+          Press Sign In in the navigation bar to kick off the authentication process. Then try to access the secure resource Fetch Data.
+        </p>
+      </UnauthenticatedTemplate>
+      <AuthenticatedTemplate>
+        <ProfileContent />
+      </AuthenticatedTemplate>
     </div>
   );
 }

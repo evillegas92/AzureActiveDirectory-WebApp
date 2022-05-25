@@ -12,10 +12,5 @@ export const msalConfig = {
 
 // Add scopes here for ID token to be used at Microsoft identity platform endpoints.
 export const loginRequest = {
-    scopes: ["User.Read"]
-};
-
-// Add the endpoints here for Microsoft Graph API services you'd like to use.
-export const graphConfig = {
-    graphMeEndpoint: "https://graph.microsoft.com/v1.0/me"
+    scopes: ["api://939ac72d-fbdc-41c6-a48c-c82258f86ee0/access_as_user"]
 };

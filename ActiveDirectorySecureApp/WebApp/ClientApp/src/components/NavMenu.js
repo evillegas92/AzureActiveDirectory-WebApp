@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useIsAuthenticated } from "@azure/msal-react";
 import { SignInButton } from './auth/SignInButton';
 import { SignOutButton } from './auth/SignOutButton';
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from "@azure/msal-react";
 import './NavMenu.css';
 
 export const NavMenu = (props) => {
@@ -27,9 +28,11 @@ export const NavMenu = (props) => {
                 <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                <AuthenticatedTemplate>
+                  <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
+                </AuthenticatedTemplate>
               </NavItem>
-              { isAuthenticated ? <SignOutButton /> : <SignInButton />}
+              {isAuthenticated ? <SignOutButton /> : <SignInButton />}
             </ul>
           </Collapse>
         </Container>
