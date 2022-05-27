@@ -2,10 +2,14 @@ import React, { useState } from "react";
 import { useMsal } from "@azure/msal-react";
 import { loginRequest } from "../authConfig";
 import { Button } from 'reactstrap';
+import { useDispatch, useSelector } from "react-redux";
+import { authTokenAcquired } from '../redux/slices/authSlice';
 
 export const ProfileContent = () => {
     const { instance, accounts, inProgress } = useMsal();
-    const [accessToken, setAccessToken] = useState(null);
+    const accessToken = useSelector(state => state.auth.token);
+
+    const dispatch = useDispatch();
 
     const name = accounts[0] && accounts[0].name;
 
@@ -20,7 +24,7 @@ export const ProfileContent = () => {
         // if needed, use the refresh token to obtain a new access token
         instance.acquireTokenSilent(request)
             .then((response) => {
-                setAccessToken(response.accessToken);
+                dispatch(authTokenAcquired(response.accessToken));
             })
             .catch((e) => {
                 /* Calling acquireTokenPopup opens a pop-up window (or acquireTokenRedirect redirects users to the
@@ -28,7 +32,7 @@ export const ProfileContent = () => {
                     credentials, giving consent to the required resource, or completing the two-factor authentication. */
                 instance.acquireTokenPopup(request)
                     .then((response) => {
-                        setAccessToken(response.accessToken);
+                        dispatch(authTokenAcquired(response.accessToken));
                     });
             });
     }

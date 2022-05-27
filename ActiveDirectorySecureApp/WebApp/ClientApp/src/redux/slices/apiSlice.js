@@ -6,7 +6,16 @@ export const apiSlice = createApi({
     // The cache reducer expects to be added at `state.api` (already default - this is optional)
     reducerPath: 'api',
     // All of our requests will have URLs starting with ''
-    baseQuery: fetchBaseQuery({ baseUrl: '' }),
+    baseQuery: fetchBaseQuery({
+        baseUrl: '',
+        prepareHeaders: (headers, { getState }) => {
+            const token = getState().auth.token;
+            if (token) {
+                headers.set('authorization', `Bearer ${token}`);
+            }
+            return headers;
+        }
+    }),
     tagTypes: ['forecasts'], //tags are used to refresh cached data
     // The "endpoints" represent operations and requests for this server
     endpoints: builder => ({
@@ -22,5 +31,5 @@ export const apiSlice = createApi({
     })
 })
 
-// Export the auto-generated hook for the `getForecasts` query endpoint
+// Export the auto-generated hooks for the query endpoints
 export const { useGetForecastsQuery, useGetForecastQuery } = apiSlice
